@@ -42,7 +42,6 @@ void *initializeKernelBinary()
 int main()
 {
 	load_idt();
-	speakerBeep();
 	printBackGround();
 	((EntryPoint)sampleCodeModuleAddress)();
 
