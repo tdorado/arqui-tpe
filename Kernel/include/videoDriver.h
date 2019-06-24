@@ -5,6 +5,8 @@
 #include <font.h>
 #include <lib.h>
 
+#define MAX_NUMBER_LENGHT 256
+
 typedef struct vbe_mode_info_structure
 {
 	uint16_t attributes;				// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.

@@ -16,7 +16,6 @@ GLOBAL _systemCallHandler
 EXTERN systemCallDispatcher
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
-EXTERN load_idt
 
 SECTION .text
 
@@ -36,9 +35,13 @@ SECTION .text
 	push r13
 	push r14
 	push r15
+	push fs
+	push gs
 %endmacro
 
 %macro popState 0
+	pop gs
+	pop fs
 	pop r15
 	pop r14
 	pop r13
@@ -82,7 +85,8 @@ SECTION .text
 	pop rsp
 	popState
 
-	mov qword [rsp], 0x400000 ;Despues de la excepcion que vuelva a el modulo que esta en 0x400000 que es SampleCodeModule
+	mov qword [rsp], 0x400000 ;After the exception go back to SampleCodeModule at 0x400000
+
 	iretq
 %endmacro
 
@@ -111,7 +115,7 @@ picMasterMask:
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
-    mov     ax, di  ; ax = mascara de 16 bits
+    mov     ax, di  ; ax = 16 bits mask
     out	0A1h,al
     pop     rbp
     retn

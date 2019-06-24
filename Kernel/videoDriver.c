@@ -1,12 +1,12 @@
 #include <videoDriver.h>
 
 static vbe *vbeStruct = (vbe *)0x0000000000005C00; //Sacado de sysvar.asm en Bootloader/Pure64/src
-static char buffer[64] = {0};
 static unsigned int actualX = 0;
 static unsigned int actualY = 0;
 static unsigned char backgroundR = 0;
 static unsigned char backgroundG = 0;
 static unsigned char backgroundB = 0;
+static char buffer[MAX_NUMBER_LENGHT] = {0};
 
 int setActualPixel(unsigned int x, unsigned int y)
 {

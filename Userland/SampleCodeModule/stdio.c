@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <systemCall.h>
 
 static unsigned int charR = 255;
 static unsigned int charG = 255;

@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include <systemCall.h>
 
 #define EOF 0
 #define NULL 0

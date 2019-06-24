@@ -4,11 +4,11 @@
 
 static void int_20();
 static void int_21();
-static void (*ints[])() = {int_20, int_21};
+static void (*irqs[])() = {int_20, int_21};
 
 void irqDispatcher(uint64_t irq)
 {
-	(*ints[irq])();
+	(*irqs[irq])();
 }
 
 static void int_20()

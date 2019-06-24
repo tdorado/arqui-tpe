@@ -1,8 +1,6 @@
 #ifndef TIME_H
 #define TIME_H
 
-#include <systemCall.h>
-
 #define NULL 0
 
 long int time();
