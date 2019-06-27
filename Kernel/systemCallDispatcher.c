@@ -1,8 +1,9 @@
 #include <stdint.h>
 #include <keyboardDriver.h>
 #include <videoDriver.h>
+#include <soundDriver.h>
+#include <memoryManager.h>
 #include <lib.h>
-#include <idtLoader.h>
 
 static uint64_t getTime(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 static uint64_t readChar(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
@@ -15,17 +16,18 @@ static uint64_t writePixel(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8
 static uint64_t setPixel(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 static uint64_t paintPixelBackGround(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9);
 
-static uint64_t (*systemCall[])(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9) = {getTime,                         //0
-																									   readChar,                        //1
-																									   writeChar,                       //2
-																									   beepSound,                       //3
-																									   memalloc,                        //4
-																									   clearBackGround,                 //5
-																									   setBackGround,                   //6
-																									   writePixel,                      //7
-																									   setPixel,                        //8
-																									   paintPixelBackGround             //9
-																									   };
+static uint64_t (*systemCall[])(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9) = {
+	getTime,			 //0
+	readChar,			 //1
+	writeChar,			 //2
+	beepSound,			 //3
+	memalloc,			 //4
+	clearBackGround,	 //5
+	setBackGround,		 //6
+	writePixel,			 //7
+	setPixel,			 //8
+	paintPixelBackGround //9
+};
 
 uint64_t systemCallDispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
@@ -50,15 +52,17 @@ static uint64_t writeChar(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8,
 
 static uint64_t beepSound(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
 {
-	speakerBeep();
+	beep();
 	return 1;
 }
 
-static uint64_t memalloc(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+static uint64_t memalloc(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
+{
 	return (uint64_t)malloc(rsi);
 }
 
-static uint64_t clearBackGround(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9){
+static uint64_t clearBackGround(uint64_t rsi, uint64_t rdx, uint64_t rcx, uint64_t r8, uint64_t r9)
+{
 	printBackGround();
 	return 1;
 }

@@ -21,6 +21,7 @@ char toLower(char c)
 	}
 	return c;
 }
+
 char toUpper(char c)
 {
 	if (c >= 'a' && c <= 'z')

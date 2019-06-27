@@ -1,4 +1,7 @@
 #include <moduleLoader.h>
+#include <stdint.h>
+#include <lib.h>
+#include <videoDriver.h>
 
 static void loadModule(uint8_t **module, void *targetModuleAddress);
 static uint32_t readUint32(uint8_t **address);

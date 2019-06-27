@@ -1,9 +1,9 @@
 GLOBAL _cli
 GLOBAL _sti
 GLOBAL _hlt
-GLOBAL picMasterMask
-GLOBAL picSlaveMask
-GLOBAL haltcpu
+GLOBAL _picMasterMask
+GLOBAL _picSlaveMask
+GLOBAL _haltCpu
 
 GLOBAL _irq00Handler
 GLOBAL _irq01Handler
@@ -59,6 +59,40 @@ SECTION .text
 	pop rax
 %endmacro
 
+%macro pushStateNoRax 0
+	push rbx
+	push rcx
+	push rdx
+	push rbp
+	push rdi
+	push rsi
+	push r8
+	push r9
+	push r10
+	push r11
+	push r12
+	push r13
+	push r14
+	push r15
+%endmacro
+
+%macro popStateNoRax 0
+	pop r15
+	pop r14
+	pop r13
+	pop r12
+	pop r11
+	pop r10
+	pop r9
+	pop r8
+	pop rsi
+	pop rdi
+	pop rbp
+	pop rdx
+	pop rcx
+	pop rbx
+%endmacro
+
 %macro irqHandlerMaster 1
 	pushState
 
@@ -104,7 +138,7 @@ _sti:
 	sti
 	ret
 
-picMasterMask:
+_picMasterMask:
 	push rbp
     mov rbp, rsp
     mov ax, di
@@ -112,7 +146,7 @@ picMasterMask:
     pop rbp
     retn
 
-picSlaveMask:
+_picSlaveMask:
 	push    rbp
     mov     rbp, rsp
     mov     ax, di  ; ax = 16 bits mask
@@ -138,20 +172,15 @@ _exception1Handler:
 
 ;System Calls
 _systemCallHandler:
-    pushState
+    pushStateNoRax
 
     call systemCallDispatcher
     
-	mov [aux], rax
-	popState
-    mov rax, [aux]
+	popStateNoRax
     
 	iretq
 
-haltcpu:
+_haltCpu:
 	cli
 	hlt
 	ret
-
-SECTION .bss
-	aux resq 1

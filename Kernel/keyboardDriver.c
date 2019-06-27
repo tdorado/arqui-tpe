@@ -1,5 +1,7 @@
 #include <keyboardDriver.h>
+#include <ioports.h>
 
+#define CHECKBYTE(binary, index) (binary & 1 << (index)) // macro que checkea si el byte en la posicion index esta prendido
 #define IS_ALPHA(C) (C >= 'a' && C <= 'z')
 
 static const char keyMap[128] =
@@ -76,54 +78,56 @@ static int elements = 0;
 static int shiftKey = 0;
 static int capsKey = 0;
 
-void keyboard_handler()
+void keyboardHandler()
 {
-  unsigned char keyCode;
-  keyCode = getKeyCode();
-
-  if (keyCode & 0x80) //Si acaba de soltar la tecla
+  if (CHECKBYTE(_ioRead(KEYBOARD_STATUS_PORT), 0)) // verificamos que se pueda leer del port
   {
-    if (keyCode == 182 || keyCode == 170) //Ambos shift
+    unsigned char keyCode;
+    keyCode = _ioRead(KEYBOARD_DATA_PORT);
+    if (CHECKBYTE(keyCode, 7)) //Si acaba de soltar la tecla
     {
-      shiftKey = 0;
-    }
-  }
-  else
-  {
-    if (keyCode == 58)
-    {
-      capsKey = !capsKey;
-    }
-    else if (keyCode == 54 || keyCode == 42) //Ambos shift
-    {
-      shiftKey = 1;
-    }
-    char c = keyMap[keyCode];
-    if (c != 0)
-    {
-      if (shiftKey)
+      if (keyCode == 182 || keyCode == 170) //Ambos shift
       {
-        if (!IS_ALPHA(c) || !capsKey)
+        shiftKey = 0;
+      }
+    }
+    else
+    {
+      if (keyCode == 58)
+      {
+        capsKey = !capsKey;
+      }
+      else if (keyCode == 54 || keyCode == 42) //Ambos shift
+      {
+        shiftKey = 1;
+      }
+      char c = keyMap[keyCode];
+      if (c != 0)
+      {
+        if (shiftKey)
         {
-          c = shiftKeyMap[keyCode];
+          if (!IS_ALPHA(c) || !capsKey)
+          {
+            c = shiftKeyMap[keyCode];
+          }
         }
-      }
-      else
-      {
-        if (IS_ALPHA(c) && capsKey)
+        else
         {
-          c = shiftKeyMap[keyCode];
+          if (IS_ALPHA(c) && capsKey)
+          {
+            c = shiftKeyMap[keyCode];
+          }
         }
-      }
-      buffer[writeIndex] = c;
-      writeIndex = (writeIndex + 1) % BUFFER_SIZE;
-      if (elements < BUFFER_SIZE)
-      {
-        elements++;
-      }
-      else
-      {
-        readIndex = (readIndex + 1) % BUFFER_SIZE;
+        buffer[writeIndex] = c;
+        writeIndex = (writeIndex + 1) % BUFFER_SIZE;
+        if (elements < BUFFER_SIZE)
+        {
+          elements++;
+        }
+        else
+        {
+          readIndex = (readIndex + 1) % BUFFER_SIZE;
+        }
       }
     }
   }

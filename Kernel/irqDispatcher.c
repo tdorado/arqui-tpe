@@ -1,22 +1,26 @@
 #include <stdint.h>
-#include <time.h>
+#include <timeDriver.h>
 #include <keyboardDriver.h>
 
-static void int_20();
-static void int_21();
-static void (*irqs[])() = {int_20, int_21};
+static void int20();
+static void int21();
+
+static void (*irqs[])() = {
+	int20,
+	int21
+};
 
 void irqDispatcher(uint64_t irq)
 {
 	(*irqs[irq])();
 }
 
-static void int_20()
+static void int20()
 {
-	timer_handler();
+	timerHandler();
 }
 
-static void int_21()
+static void int21()
 {
-	keyboard_handler();
+	keyboardHandler();
 }

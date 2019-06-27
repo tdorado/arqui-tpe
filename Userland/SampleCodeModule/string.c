@@ -31,10 +31,11 @@ int strcmp(const char *s1, const char *s2)
     return s1[i] - s2[i];
 }
 
-int strncmp(const char *s1, const char *s2, long unsigned int n){
+int strncmp(const char *s1, const char *s2, long unsigned int n)
+{
     int i;
 
-    for (i = 0; s1[i] == s2[i] && i<n; i++)
+    for (i = 0; s1[i] == s2[i] && i < n; i++)
         if (s1[i] == '\0')
             return 0;
     return s1[i] - s2[i];
@@ -63,10 +64,12 @@ const char *strchr(const char *s, int c)
     return NULL;
 }
 
-char *strncpy(char *destination, const char *source, long unsigned int n){
+char *strncpy(char *destination, const char *source, long unsigned int n)
+{
     char *aux = destination;
     int i = 0;
-    while(i < n && *source != '\0'){
+    while (i < n && *source != '\0')
+    {
         *destination = *source;
         destination++;
         source++;
@@ -75,9 +78,11 @@ char *strncpy(char *destination, const char *source, long unsigned int n){
     *destination = '\0';
     return aux;
 }
-char *strcpy(char *destination, const char *source){
+char *strcpy(char *destination, const char *source)
+{
     char *aux = destination;
-    while(*source != '\0'){
+    while (*source != '\0')
+    {
         *destination = *source;
         destination++;
         source++;
@@ -88,7 +93,7 @@ char *strcpy(char *destination, const char *source){
 
 void *memcpy(void *destination, const void *source, long unsigned int length)
 {
-	/*
+    /*
 	* memcpy does not support overlapping buffers, so always do it
 	* forwards. (Don't change this without adjusting memmove.)
 	*
@@ -100,37 +105,37 @@ void *memcpy(void *destination, const void *source, long unsigned int length)
 	* the compiler to be reasonably intelligent about optimizing
 	* the divides and modulos out. Fortunately, it is.
 	*/
-	long unsigned int i;
+    long unsigned int i;
 
-	if ((long unsigned int)destination % sizeof(unsigned int) == 0 &&
-		(long unsigned int)source % sizeof(unsigned int) == 0 &&
-		length % sizeof(unsigned int) == 0)
-	{
-		unsigned int *d = (unsigned int *)destination;
-		const unsigned int *s = (const unsigned int *)source;
+    if ((long unsigned int)destination % sizeof(unsigned int) == 0 &&
+        (long unsigned int)source % sizeof(unsigned int) == 0 &&
+        length % sizeof(unsigned int) == 0)
+    {
+        unsigned int *d = (unsigned int *)destination;
+        const unsigned int *s = (const unsigned int *)source;
 
-		for (i = 0; i < length / sizeof(unsigned int); i++)
-			d[i] = s[i];
-	}
-	else
-	{
-		char *d = (char *)destination;
-		const char *s = (const char *)source;
+        for (i = 0; i < length / sizeof(unsigned int); i++)
+            d[i] = s[i];
+    }
+    else
+    {
+        char *d = (char *)destination;
+        const char *s = (const char *)source;
 
-		for (i = 0; i < length; i++)
-			d[i] = s[i];
-	}
+        for (i = 0; i < length; i++)
+            d[i] = s[i];
+    }
 
-	return destination;
+    return destination;
 }
 
 void *memset(void *destiation, int c, long unsigned int length)
 {
-	char chr = (char)c;
-	char *dst = (char *)destiation;
+    char chr = (char)c;
+    char *dst = (char *)destiation;
 
-	while (length--)
-		dst[length] = chr;
+    while (length--)
+        dst[length] = chr;
 
-	return destiation;
+    return destiation;
 }

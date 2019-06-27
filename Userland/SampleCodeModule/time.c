@@ -1,4 +1,5 @@
 #include <time.h>
+#include <stdio.h>
 #include <systemCall.h>
 
 static int UTC = -3;
@@ -90,7 +91,7 @@ void getAllTimesForUTC(int times[7], int actualUTC)
                 year--;
                 month = 12;
             }
-            day = lastDayMonths[month-1];
+            day = lastDayMonths[month - 1];
             if (year % 4 == 0 && month == 2)
             { // Leap Year
                 day = 29;
@@ -107,7 +108,7 @@ void getAllTimesForUTC(int times[7], int actualUTC)
         {
             weekDay = 1;
         }
-        if ((day < lastDayMonths[month-1]) || (year % 4 == 0 && month == 2 && day < 29)) //Last condition is leap year
+        if ((day < lastDayMonths[month - 1]) || (year % 4 == 0 && month == 2 && day < 29)) //Last condition is leap year
         {
             day++;
         }
@@ -135,7 +136,7 @@ void getAllTimesForUTC(int times[7], int actualUTC)
 
 long int time(long int *t)
 {
-    int times[7] ={getSecond(), getMinute(), getHour(), getWeekDay(), getDay(), getMonth(), getYear()};
+    int times[7] = {getSecond(), getMinute(), getHour(), getWeekDay(), getDay(), getMonth(), getYear()};
     long int result = 0;
 
     result += times[0];                //Add actual seconds
@@ -145,9 +146,9 @@ long int time(long int *t)
 
     int year = times[6];
     int month = times[5];
-    
-    result += monthsDays[month-1] * 24 * 60 * 60; //Add seconds of month without leaps
-    if ((year % 4) == 0 && month > 2)           //if year is leap and we are past febrary adds one day in seconds
+
+    result += monthsDays[month - 1] * 24 * 60 * 60; //Add seconds of month without leaps
+    if ((year % 4) == 0 && month > 2)               //if year is leap and we are past febrary adds one day in seconds
     {
         result += 24 * 60 * 60;
     }
@@ -157,7 +158,8 @@ long int time(long int *t)
     year -= 1970;
     result += year * 365 * 24 * 60 * 60; //Adds seconds of year without leaps
 
-    if(t != NULL){
+    if (t != NULL)
+    {
         *t = result;
     }
     return result;
@@ -175,6 +177,6 @@ int getTimeUTC()
 
 void setTimeUTC(int newUTC)
 {
-    if(newUTC>=-12 || newUTC<=12)
+    if (newUTC >= -12 || newUTC <= 12)
         UTC = newUTC;
 }

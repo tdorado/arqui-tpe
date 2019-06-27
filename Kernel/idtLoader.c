@@ -19,32 +19,32 @@ typedef struct
 
 DESCR_INT *idt = (DESCR_INT *)0; // IDT de 255 entradas
 
-static void setup_IDT_entry(int index, uint64_t offset);
+static void setupIdtEntry(int index, uint64_t offset);
 
-void load_idt()
+void loadIdt()
 {
 
   _cli();
 
   //Exceptions
-  setup_IDT_entry(0x00, (uint64_t)&_exception0Handler); // Zero Divition
-  setup_IDT_entry(0x06, (uint64_t)&_exception1Handler); // Invalid Operation Code
+  setupIdtEntry(0x00, (uint64_t)&_exception0Handler); // Zero Divition
+  setupIdtEntry(0x06, (uint64_t)&_exception1Handler); // Invalid Operation Code
 
   //Interruptions
-  setup_IDT_entry(0x20, (uint64_t)&_irq00Handler); // Timer
-  setup_IDT_entry(0x21, (uint64_t)&_irq01Handler); // Keyboard
+  setupIdtEntry(0x20, (uint64_t)&_irq00Handler); // Timer
+  setupIdtEntry(0x21, (uint64_t)&_irq01Handler); // Keyboard
 
   //System Calls
-  setup_IDT_entry(0x80, (uint64_t)&_systemCallHandler); // System Call
+  setupIdtEntry(0x80, (uint64_t)&_systemCallHandler); // System Call
 
-  //Solo interrupcion timer tick habilitadas
-  picMasterMask(0xFC);
-  picSlaveMask(0xFF);
+  //Timer and Keyboard interruptions activated
+  _picMasterMask(0xFC);
+  _picSlaveMask(0xFF);
 
   _sti();
 }
 
-static void setup_IDT_entry(int index, uint64_t offset)
+static void setupIdtEntry(int index, uint64_t offset)
 {
   idt[index].selector = 0x08;
   idt[index].offset_l = offset & 0xFFFF;

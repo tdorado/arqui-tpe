@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define EOF 0
+#define EOF -1
 #define NULL 0
 #define BUFFER_SIZE 128
 #define INT_BUFFER_SIZE 12

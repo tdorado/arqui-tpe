@@ -263,4 +263,4 @@ unsigned char *fontPixelMap(unsigned char c);
 #define XXXXXXX_ 0xFE
 #define XXXXXXXX 0xFF
 
-#endif
+#endif /* FONT_H */

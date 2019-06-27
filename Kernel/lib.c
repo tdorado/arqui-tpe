@@ -1,18 +1,4 @@
-#include <stdint.h>
-
-static int8_t *mem = (int8_t *)0x1000000;
-
-void *malloc(uint64_t length)
-{
-	uint64_t i;
-	for (i = 0; i < length; i++)
-	{
-		mem[i] = 0;
-	}
-	void *result = mem;
-	mem += length + 1;
-	return result;
-}
+#include <lib.h>
 
 void *memset(void *destination, int32_t c, uint64_t length)
 {

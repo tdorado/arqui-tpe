@@ -2,6 +2,8 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <idtLoader.h>
+#include <videoDriver.h>
+#include <memoryManager.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -14,6 +16,8 @@ static const uint64_t PageSize = 0x1000;
 
 static void *const sampleCodeModuleAddress = (void *)0x400000;
 static void *const sampleDataModuleAddress = (void *)0x500000;
+static void *const memoryAddress = (void *)0x700000;
+static void *const videoAddress = (void *)0x5C00;
 
 typedef int (*EntryPoint)();
 
@@ -35,15 +39,19 @@ void *initializeKernelBinary()
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
 	clearBSS(&bss, &endOfKernel - &bss);
+	loadVideo(videoAddress);
+	loadMemoryManager(memoryAddress);
+	loadIdt();
 
 	return getStackBase();
 }
 
+void init(){
+	((EntryPoint)sampleCodeModuleAddress)();
+}
+
 int main()
 {
-	load_idt();
-	printBackGround();
-	((EntryPoint)sampleCodeModuleAddress)();
-
+	init();
 	return 0;
 }

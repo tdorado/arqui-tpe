@@ -10,13 +10,15 @@ void printTime()
     printf("Hora: %d:%d:%d.\n", times[2], times[1], times[0]);
 }
 
-void printDate(){
+void printDate()
+{
     int times[7];
     getAllTimes(times);
-    printf("Fecha: %s %d de %s de %d.\n", weekDays[times[3] - 1], times[4], months[times[5]-1], times[6]);
+    printf("Fecha: %s %d de %s de %d.\n", weekDays[times[3] - 1], times[4], months[times[5] - 1], times[6]);
 }
 
-void printTimeUTC(){
+void printTimeUTC()
+{
     printf("Zona horaria: UTC %d.\n", getTimeUTC());
 }
 

@@ -1,4 +1,3 @@
-/* _loader.c */
 #include <stdint.h>
 #include <string.h>
 

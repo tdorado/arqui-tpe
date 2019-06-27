@@ -1,11 +1,11 @@
 #ifndef KEYBOARD_DRIVER_H
 #define KEYBOARD_DRIVER_H
 
+#include <defs.h>
+
 #define BUFFER_SIZE 128
-#define EOF 0
 
-extern int getKeyCode();
 int getChar();
-void keyboard_handler();
+void keyboardHandler();
 
-#endif
+#endif  /* KEYBOARD_DRIVER_H */
